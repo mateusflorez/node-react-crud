@@ -1,16 +1,23 @@
 import express from 'express'
+import { PrismaClient } from '@prisma/client'
 
-const toDosData = [{ name: 'Test', status: false }]
 const toDosRoutes = express.Router()
+const prisma = new PrismaClient()
 
-toDosRoutes.post('/todos', function (req, res) {
+toDosRoutes.post('/todos', async function (req, res) {
     const { name } = req.body
-    toDosData.push({ name, status: false })
-    return res.status(201).json(toDosData)
+    const todo = await prisma.todo.create({
+        data: {
+            name,
+            status: false
+        }
+    })
+    return res.status(201).json(todo)
 })
 
-toDosRoutes.get('/todos', function (req, res) {
-    return res.status(200).json(toDosData);
+toDosRoutes.get('/todos', async function (req, res) {
+    const todos = await prisma.todo.findMany()
+    return res.status(200).json(todos)
 })
 
 export { toDosRoutes }
