@@ -22,6 +22,19 @@ toDosRoutes.get('/todos', async function (req, res) {
 
 toDosRoutes.put('/todos', async function (req, res) {
     const { name, id, status } = req.body
+
+    if (!id) {
+        return res.status(400).json({
+            message: 'Missing id'
+        })
+    }
+
+    const todoAlreadyExist = await prisma.todo.findUnique({ where: { id } })
+
+    if (!todoAlreadyExist) {
+        return res.status(404).json({ "message": "Todo not found" })
+    }
+
     const todo = await prisma.todo.update({
         where: {
             id
