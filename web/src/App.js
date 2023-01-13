@@ -24,7 +24,12 @@ function App() {
   return (
     <div className="App">
       <header className="container">
+        <div className='header'>
+          <h1>To Do</h1>
+        </div>
         <Todos todos={arrayTodos} />
+        <input className='inputName' />
+        <button className='newTaskButton'>+ Hew task</button>
       </header>
     </div>
   );
