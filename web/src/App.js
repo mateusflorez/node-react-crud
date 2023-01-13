@@ -1,7 +1,7 @@
 import './App.css';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
-const arrayTodos = [{ name: "Limpar a casa", status: false }, { name: "Limpar a moto", status: false }]
+const arrayTodos = [{ name: "Limpar a casa", status: true }, { name: "Limpar a moto", status: false }]
 
 const Todos = ({ todos }) => {
   return (
@@ -9,9 +9,10 @@ const Todos = ({ todos }) => {
       {todos.map(todo => {
         return (
           <div className="todo">
+            <button className='checkbox' style={{ backgroundColor: todo.status ? "#A879E6" : "white" }}></button>
             <p>{todo.name}</p>
-            <button><AiOutlineEdit /></button>
-            <button><AiOutlineDelete /></button>
+            <button><AiOutlineEdit color={"#64697b"} size={20} /></button>
+            <button><AiOutlineDelete color={"#64697b"} size={20} /></button>
           </div>
         )
       })}
