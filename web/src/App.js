@@ -1,11 +1,30 @@
 import './App.css';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
-const arrayTodos = [{ name: "Limpar a casa", status: true }, { name: "Limpar a moto", status: false }]
+const arrayTodos = [
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a casa", status: true },
+  { name: "Limpar a moto", status: false }]
 
 const Todos = ({ todos }) => {
   return (
-    <div className="todos">
+    <div className="todosInside">
       {todos.map(todo => {
         return (
           <div className="todo">
@@ -27,7 +46,9 @@ function App() {
         <div className='header'>
           <h1>To Do</h1>
         </div>
-        <Todos todos={arrayTodos} />
+        <div className='todos'>
+          <Todos todos={arrayTodos} />
+        </div>
         <input className='inputName' />
         <button className='newTaskButton'>+ Hew task</button>
       </header>
