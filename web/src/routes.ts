@@ -48,4 +48,12 @@ toDosRoutes.put('/todos', async function (req, res) {
     return res.status(200).json(todo)
 })
 
+toDosRoutes.delete('/todos', async function (req, res) {
+    const { id } = req.body
+    const todo = await prisma.todo.delete({
+        where: { id },
+    })
+    return res.status(204)
+})
+
 export { toDosRoutes }
