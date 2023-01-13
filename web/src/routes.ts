@@ -48,12 +48,25 @@ toDosRoutes.put('/todos', async function (req, res) {
     return res.status(200).json(todo)
 })
 
-toDosRoutes.delete('/todos', async function (req, res) {
-    const { id } = req.body
-    const todo = await prisma.todo.delete({
-        where: { id },
-    })
-    return res.status(204)
+toDosRoutes.delete('/todos/:id', async function (req, res) {
+    const id = Number(req.params.id)
+
+    const todoAlreadyExist = await prisma.todo.findUnique({ where: { id: id } })
+
+    if (!todoAlreadyExist) {
+        return res.status(404).json({ "message": "Todo not found" })
+    }
+
+    try {
+        await prisma.todo.delete({
+            where: { id: id }
+        })
+        return res.status(204).send()
+    }
+    catch {
+        return res.status(500).json({ "message": "Unknown error" })
+    }
+
 })
 
 export { toDosRoutes }
