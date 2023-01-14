@@ -1,26 +1,7 @@
 import './App.css';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
-
-const arrayTodos = [
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a casa", status: true },
-  { name: "Limpar a moto", status: false }]
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Todos = ({ todos }) => {
   return (
@@ -40,6 +21,19 @@ const Todos = ({ todos }) => {
 }
 
 function App() {
+  async function getTodos() {
+    try {
+      const response = await axios.get("http://localhost:3333/todos")
+      setTodos(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const [todos, setTodos] = useState([])
+  useEffect(() => {
+    getTodos()
+  }, [])
   return (
     <div className="App">
       <header className="container">
@@ -47,7 +41,7 @@ function App() {
           <h1>To Do</h1>
         </div>
         <div className='todos'>
-          <Todos todos={arrayTodos} />
+          <Todos todos={todos} />
         </div>
         <input className='inputName' />
         <button className='newTaskButton'>+ Hew task</button>
