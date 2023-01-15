@@ -15,7 +15,7 @@ function App() {
                 className='checkbox'
                 style={{ backgroundColor: todo.status ? "#A879E6" : "white" }}></button>
               <p>{todo.name}</p>
-              <button><AiOutlineEdit color={"#64697b"} size={20} /></button>
+              <button onClick={() => editButton(todo)}><AiOutlineEdit color={"#64697b"} size={20} /></button>
               <button onClick={() => deleteTodo(todo)}><AiOutlineDelete color={"#64697b"} size={20} /></button>
             </div>
           )
@@ -26,6 +26,13 @@ function App() {
 
   async function newTaskButton() {
     setInputVisibility(!inputVisibility)
+    setSelectedTodo("")
+  }
+
+  async function editButton(todo) {
+    setSelectedTodo(todo)
+    setInputValue(todo.name)
+    setInputVisibility(true)
   }
 
   async function modifyStatus(todo) {
@@ -42,6 +49,18 @@ function App() {
       await axios.post("http://localhost:3333/todos", { name: inputValue })
       getTodos()
       newTaskButton()
+      setInputValue("")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function updateTodo() {
+    try {
+      await axios.put("http://localhost:3333/todos", { id: selectedTodo.id, name: inputValue })
+      getTodos()
+      newTaskButton()
+      setInputValue("")
     } catch (error) {
       console.log(error)
     }
@@ -68,6 +87,7 @@ function App() {
   const [todos, setTodos] = useState([])
   const [inputValue, setInputValue] = useState("")
   const [inputVisibility, setInputVisibility] = useState(false)
+  const [selectedTodo, setSelectedTodo] = useState("")
 
   useEffect(() => {
     getTodos()
@@ -90,7 +110,7 @@ function App() {
             setInputValue(event.target.value)
           }}
         />
-        <button onClick={inputVisibility ? createTodo : newTaskButton} className='newTaskButton'>
+        <button onClick={inputVisibility ? selectedTodo ? updateTodo : createTodo : newTaskButton} className='newTaskButton'>
           {inputVisibility ? "Save" : "+ Hew task"}
         </button>
       </header>
