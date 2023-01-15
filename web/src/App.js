@@ -11,6 +11,7 @@ function App() {
           return (
             <div className="todo">
               <button
+                onClick={() => modifyStatus(todo)}
                 className='checkbox'
                 style={{ backgroundColor: todo.status ? "#A879E6" : "white" }}></button>
               <p>{todo.name}</p>
@@ -25,6 +26,15 @@ function App() {
 
   async function newTaskButton() {
     setInputVisibility(!inputVisibility)
+  }
+
+  async function modifyStatus(todo) {
+    try {
+      await axios.put("http://localhost:3333/todos", { id: todo.id, status: !todo.status })
+      getTodos()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async function createTodo() {
