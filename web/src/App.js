@@ -3,24 +3,26 @@ import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Todos = ({ todos }) => {
-  return (
-    <div className="todosInside">
-      {todos.map(todo => {
-        return (
-          <div className="todo">
-            <button className='checkbox' style={{ backgroundColor: todo.status ? "#A879E6" : "white" }}></button>
-            <p>{todo.name}</p>
-            <button><AiOutlineEdit color={"#64697b"} size={20} /></button>
-            <button><AiOutlineDelete color={"#64697b"} size={20} /></button>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
 function App() {
+  const Todos = ({ todos }) => {
+    return (
+      <div className="todosInside">
+        {todos.map(todo => {
+          return (
+            <div className="todo">
+              <button
+                className='checkbox'
+                style={{ backgroundColor: todo.status ? "#A879E6" : "white" }}></button>
+              <p>{todo.name}</p>
+              <button><AiOutlineEdit color={"#64697b"} size={20} /></button>
+              <button onClick={() => deleteTodo(todo)}><AiOutlineDelete color={"#64697b"} size={20} /></button>
+            </div>
+          )
+        })}
+      </div>
+    )
+  }
+
   async function newTaskButton() {
     setInputVisibility(!inputVisibility)
   }
@@ -30,6 +32,15 @@ function App() {
       await axios.post("http://localhost:3333/todos", { name: inputValue })
       getTodos()
       newTaskButton()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function deleteTodo(todo) {
+    try {
+      await axios.delete(`http://localhost:3333/todos/${todo.id}`)
+      getTodos()
     } catch (error) {
       console.log(error)
     }
@@ -51,6 +62,7 @@ function App() {
   useEffect(() => {
     getTodos()
   }, [])
+
   return (
     <div className="App">
       <header className="container">
