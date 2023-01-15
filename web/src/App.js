@@ -21,6 +21,20 @@ const Todos = ({ todos }) => {
 }
 
 function App() {
+  async function newTaskButton() {
+    setInputVisibility(!inputVisibility)
+  }
+
+  async function createTodo() {
+    try {
+      await axios.post("http://localhost:3333/todos", { name: inputValue })
+      getTodos()
+      newTaskButton()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   async function getTodos() {
     try {
       const response = await axios.get("http://localhost:3333/todos")
@@ -31,6 +45,9 @@ function App() {
   }
 
   const [todos, setTodos] = useState([])
+  const [inputValue, setInputValue] = useState("")
+  const [inputVisibility, setInputVisibility] = useState(false)
+
   useEffect(() => {
     getTodos()
   }, [])
@@ -43,8 +60,17 @@ function App() {
         <div className='todos'>
           <Todos todos={todos} />
         </div>
-        <input className='inputName' />
-        <button className='newTaskButton'>+ Hew task</button>
+        <input
+          className='inputName'
+          style={{ display: inputVisibility ? "block" : "none" }}
+          value={inputValue}
+          onChange={(event) => {
+            setInputValue(event.target.value)
+          }}
+        />
+        <button onClick={inputVisibility ? createTodo : newTaskButton} className='newTaskButton'>
+          {inputVisibility ? "Save" : "+ Hew task"}
+        </button>
       </header>
     </div>
   );
